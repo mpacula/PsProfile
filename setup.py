@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 
 setup(
-    name="PsProfile",
+    name="psprofile",
     version='0.1.1',
     description="Collects resource usage of an executed script",
     url="http://github.com/egafni/PsProfile",
