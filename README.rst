@@ -15,7 +15,9 @@ Usage
 .. code-block:: bash
 
     $ psprofile -h
-    usage: psprofile [-h] [-f OUTPUT_FILE] [-i POLL_INTERVAL] command_script
+    usage: psprofile [-h] [-f OUTPUT_FILE] [-i POLL_INTERVAL]
+                     [-w WAIT_FOR_COMMAND_SCRIPT]
+                     command_script
 
     Profile resource usage of a command
 
@@ -28,9 +30,16 @@ Usage
                             File to store output of profile to.
       -i POLL_INTERVAL, --poll_interval POLL_INTERVAL
                             How often to poll the resource usage information in
-                            /proc, in seconds (default 2).
+                            /proc, in seconds (default 1).
+      -w WAIT_FOR_COMMAND_SCRIPT, --wait_for_command_script WAIT_FOR_COMMAND_SCRIPT
+                            time to wait for command_script to exist(useful to
+                            handle eventual consistency on shared filesystems)
 
+Example output:
 
+.. code-block:: bash
+
+    psprofile /path/to/bash.script
 
 .. code-block:: json
 
