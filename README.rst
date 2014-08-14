@@ -39,7 +39,7 @@ Example output:
 
 .. code-block:: bash
 
-    psprofile /path/to/bash.script
+    $ psprofile /path/to/bash.script
 
 .. code-block:: json
 
