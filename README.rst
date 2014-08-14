@@ -3,7 +3,7 @@ PsProfile
 
 A python process profiler.  Watches a process tree and emits resource usage metrics.  Uses the psutil library, so runs on a mac and linux (haven't tested Windows,
 but theoretically it will work).  You will get slightly different fields back depending on the operating system.
-Used by the `Cosmos Workflow Management System<https://cosmos.hms.harvard.edu/>`_.
+Used by the `Cosmos Workflow Management System <https://cosmos.hms.harvard.edu/>`_
 
 
 Install
