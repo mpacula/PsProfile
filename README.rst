@@ -66,3 +66,8 @@ Example output:
             "io_read_count": 12,
             "exit_status": 0
         }
+
+Todo
+=====
+
+* Support arbitrary commands.  Easy to do I just don't have a use case for it.

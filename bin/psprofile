@@ -11,7 +11,7 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser(description='Profile resource usage of a command')
-    parser.add_argument('-f', '--output_file', help='File to store output of profile to.')
+    parser.add_argument('-o', '--output_file', help='File to store output of profile to.')
     parser.add_argument('-i', '--poll_interval', type=int, default=1,
                         help='How often to poll the resource usage information in /proc, in seconds (default 1).')
     # parser.add_argument('command', nargs=argparse.REMAINDER, help="The command to run.")

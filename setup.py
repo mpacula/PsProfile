@@ -3,9 +3,9 @@ from setuptools import find_packages
 
 
 setup(
-    name="psprofile",
-    version='0.1',
-    description="Collects resource usage of an executed command",
+    name="PsProfile",
+    version='0.1.1',
+    description="Collects resource usage of an executed script",
     url="http://github.com/egafni/PsProfile",
     author="Erik Gafni",
     author_email="egafni@gmail.com",
