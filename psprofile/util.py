@@ -39,7 +39,7 @@ def max(values):
         return 0
 
 
-def _poll(p):
+def _poll(proc):
     """
     Polls a process
     :yields: (attribute_name, value)
@@ -55,7 +55,7 @@ def _poll(p):
     attrs = ['cpu_times', 'memory_info', 'io_counters', 'num_fds', 'num_ctx_switches', 'num_threads']
     for category in attrs:
         try:
-            r = getattr(p, 'get_' + category)()
+            r = getattr(proc, 'get_' + category)()
         except (psutil.AccessDenied, psutil.NoSuchProcess):
             continue
         except AttributeError:
@@ -64,10 +64,10 @@ def _poll(p):
         if hasattr(r, '_fields'):
             for field in r._fields:
                 value = getattr(r, field)
+                yield _human_readable(field, value)
         else:
             field, value = category, r
-
-        yield _human_readable(field, value)
+            yield _human_readable(field, value)
 
 
 def poll_children(p):
