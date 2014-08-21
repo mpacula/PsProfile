@@ -16,26 +16,22 @@ Usage
 
 .. code-block:: bash
 
-    $ psprofile -h
-    usage: psprofile [-h] [-f OUTPUT_FILE] [-i POLL_INTERVAL]
-                     [-w WAIT_FOR_COMMAND_SCRIPT]
-                     command_script
+    $ bin/psprofile -h
+    usage: psprofile [-h] [-o OUTPUT_FILE] [-i POLL_INTERVAL] [-w WAIT] ...
 
     Profile resource usage of a command
 
     positional arguments:
-      command_script        path to a shell script to run
+      command               The command to run.
 
     optional arguments:
       -h, --help            show this help message and exit
-      -f OUTPUT_FILE, --output_file OUTPUT_FILE
+      -o OUTPUT_FILE, --output_file OUTPUT_FILE
                             File to store output of profile to.
       -i POLL_INTERVAL, --poll_interval POLL_INTERVAL
                             How often to poll the resource usage information in
                             /proc, in seconds (default 1).
-      -w WAIT_FOR_COMMAND_SCRIPT, --wait_for_command_script WAIT_FOR_COMMAND_SCRIPT
-                            time to wait for command_script to exist(useful to
-                            handle eventual consistency on shared filesystems)
+      -w WAIT, --wait WAIT  time to wait for executable to exist
 
 Example output:
 
@@ -68,8 +64,3 @@ Example output:
             "io_read_count": 12,
             "exit_status": 0
         }
-
-Todo
-=====
-
-* Support arbitrary commands.  Easy to do I just don't have a use case for it.

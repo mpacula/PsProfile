@@ -3,9 +3,10 @@ import time
 import os
 import sys
 import json
-
+import subprocess as sp
 from psprofile.main import main
 
+from psprofile.util import which
 
 if __name__ == '__main__':
     import argparse
@@ -14,20 +15,19 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--output_file', help='File to store output of profile to.')
     parser.add_argument('-i', '--poll_interval', type=int, default=1,
                         help='How often to poll the resource usage information in /proc, in seconds (default 1).')
-    # parser.add_argument('command', nargs=argparse.REMAINDER, help="The command to run.")
-    parser.add_argument('command_script', help="path to a shell script to run")
-    parser.add_argument('-w', '--wait_for_command_script', help="time to wait for command_script to exist"
-                                                                "(useful to handle eventual consistency on shared filesystems)", default=0)
+    #parser.add_argument('command_script', help="path to a shell script to run")
+    parser.add_argument('-w', '--wait', help="time to wait for executable to exist")
+    parser.add_argument('command', nargs=argparse.REMAINDER, help="The command to run.")
     args = parser.parse_args()
 
     start = time.time()
-    while not os.path.exists(args.command_script):
-        if time.time() - start > args.wait_for_command_script:
-            raise IOError('command_script `%s` does not exist!' % args.command_script)
+    while not which(args.command[0]):
+        if time.time() - start > args.wait:
+            raise IOError('`%s` does not exist!' % args.command[0])
         time.sleep(.5)
 
     # Run Profile
-    output = main(args.command_script, args.poll_interval)
+    output = main(args.command, args.poll_interval)
 
     # Write output
     output_json = json.dumps(output, indent=4)
