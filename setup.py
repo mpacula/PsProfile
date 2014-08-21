@@ -4,7 +4,7 @@ from setuptools import find_packages
 
 setup(
     name="psprofile",
-    version='0.1.3',
+    version='0.1.4',
     description="Collects resource usage of an executed script",
     url="http://github.com/egafni/PsProfile",
     author="Erik Gafni",

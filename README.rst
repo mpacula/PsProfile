@@ -16,7 +16,7 @@ Usage
 
 .. code-block:: bash
 
-    $ bin/psprofile -h
+    $ psprofile -h
     usage: psprofile [-h] [-o OUTPUT_FILE] [-i POLL_INTERVAL] [-w WAIT] ...
 
     Profile resource usage of a command
@@ -32,6 +32,14 @@ Usage
                             How often to poll the resource usage information in
                             /proc, in seconds (default 1).
       -w WAIT, --wait WAIT  time to wait for executable to exist
+
+    $ psprofile ls $HOME
+    $ psprofile "echo hi; sleep ls"
+
+    # note that:
+    $ psprofile echo hi > tmp/test  #  (psprofile's output is redirected)
+    # is not the same as:
+    $ psprofile "echo hi > /tmp/test" #  (echo's output is redirected)
 
 Example output:
 

@@ -17,17 +17,19 @@ if __name__ == '__main__':
                         help='How often to poll the resource usage information in /proc, in seconds (default 1).')
     #parser.add_argument('command_script', help="path to a shell script to run")
     parser.add_argument('-w', '--wait', help="time to wait for executable to exist")
-    parser.add_argument('command', nargs=argparse.REMAINDER, help="The command to run.")
+    parser.add_argument('-s','--shell', help="Shell to execute command with, default is /bin/bash", default='/bin/bash')
+    parser.add_argument('command', nargs='+', help="The command to run.")
     args = parser.parse_args()
 
     start = time.time()
-    while not which(args.command[0]):
+    bin = args.command[0].split(' ')[0]
+    while not (os.path.exists(bin) or which(bin)):
         if time.time() - start > args.wait:
-            raise IOError('`%s` does not exist!' % args.command[0])
+            raise IOError('`%s` does not exist!' % bin)
         time.sleep(.5)
 
     # Run Profile
-    output = main(args.command, args.poll_interval)
+    output = main(args.command, args.poll_interval, args.shell)
 
     # Write output
     output_json = json.dumps(output, indent=4)

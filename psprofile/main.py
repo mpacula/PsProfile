@@ -9,7 +9,7 @@ import psutil
 from .util import mean, max, poll_children
 
 
-def main(command, poll_interval):
+def main(command, poll_interval, shell):
     try:
         # Declare data store variables
         records = defaultdict(list)
@@ -19,7 +19,7 @@ def main(command, poll_interval):
 
         # Run the command and do the polling
         start_time = time.time()
-        proc = psutil.Popen(command)
+        proc = psutil.Popen(' '.join(command), shell=shell)
         num_polls = 0
         while proc.poll() is None:
             num_polls += 1
