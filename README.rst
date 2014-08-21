@@ -34,6 +34,7 @@ Usage
       -w WAIT, --wait WAIT  time to wait for executable to exist
 
     $ psprofile ls $HOME
+    $ psprofile python test.py
     $ psprofile "echo hi; sleep ls"
 
     # note that:

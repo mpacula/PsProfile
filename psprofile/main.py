@@ -31,7 +31,7 @@ def main(command, poll_interval, shell):
 
                     records[name].append(value)
                 else:
-                    output[name] = int(value)
+                    output[name] = value
 
             time.sleep(poll_interval)
 
@@ -40,19 +40,17 @@ def main(command, poll_interval, shell):
         os.kill(proc.pid, signal.SIGINT)
 
     # Get means and maxes
-    for name in ['rss_mem_kb', 'vms_mem_kb', 'num_threads', 'num_fds']:
-        output['avg_%s' % name] = mean(records[name])
-        output['max_%s' % name] = max(records[name])
+    for name, values in records.items():
+        output['avg_%s' % name] = mean(values)
+        output['max_%s' % name] = max(values)
 
-    # Calculate some extra fielsd
+    # Calculate some extra fields
     output['exit_status'] = proc.poll()
     end_time = time.time()  # waiting till last second
     output['num_polls'] = num_polls
     output['wall_time'] = int(end_time - start_time)
-    if output.get('cpu_time'):
-        output['percent_cpu'] = int(round(float(output.get('cpu_time', 0) / float(output['wall_time']), 2) * 100))
-    else:
-        output['percent_cpu'] = 0
     output['cpu_time'] = output.get('user_time', 0) + output.get('system_time', 0)
+    output['percent_cpu'] = int(round(float(output['cpu_time']) / float(output['wall_time']), 2) * 100)
+
 
     return output

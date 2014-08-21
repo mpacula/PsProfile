@@ -56,7 +56,9 @@ def _poll(proc):
     for category in attrs:
         try:
             r = getattr(proc, 'get_' + category)()
-        except (psutil.AccessDenied, psutil.NoSuchProcess):
+        except psutil.AccessDenied:
+            continue
+        except psutil.NoSuchProcess:
             continue
         except AttributeError:
             continue
