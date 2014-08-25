@@ -28,6 +28,11 @@ if __name__ == '__main__':
             raise IOError('`%s` does not exist!' % bin)
         time.sleep(.5)
 
+    if args.output_file:
+        out_dir = os.path.dirname(args.output_file)
+        if not os.path.exists(out_dir):
+            raise IOError('output directory does not exist: `%s`' % out_dir)
+
     # Run Profile
     output = main(args.command, args.poll_interval, args.shell)
 
