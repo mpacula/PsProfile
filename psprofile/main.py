@@ -9,14 +9,14 @@ import psutil
 from .util import mean, max, poll_children
 
 
-def main(command, poll_interval, shell, exit_status_only):
+def main(command, poll_interval, shell, skip_profile):
     try:
         # Run the command and do the polling
         start_time = time.time()
         proc = psutil.Popen(' '.join(command), shell=shell)
 
         output = OrderedDict()
-        if exit_status_only:
+        if skip_profile:
             output['exit_status'] = proc.wait()
         else:
             # Declare data store variables
@@ -46,7 +46,7 @@ def main(command, poll_interval, shell, exit_status_only):
 
     end_time = time.time()
 
-    if exit_status_only:
+    if skip_profile:
         assert output['exit_status'] == proc.poll() # can delete this if it works once
         output['wall_time'] = int(end_time - start_time)
     else:

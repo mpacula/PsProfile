@@ -18,7 +18,7 @@ if __name__ == '__main__':
     #parser.add_argument('command_script', help="path to a shell script to run")
     parser.add_argument('-w', '--wait', help="time to wait for executable to exist", default=0)
     parser.add_argument('-s', '--shell', help="Shell to execute command with, default is /bin/bash", default='/bin/bash')
-    parser.add_argument('-e', '--exit_status_only', action='store_true', help="do not profile, just get exit_status and wall time")
+    parser.add_argument('-s', '--skip_profile', action='store_true', help="do not profile, just get exit_status and wall time")
     parser.add_argument('command', nargs='+', help="The command to run.")
     args = parser.parse_args()
 
@@ -36,12 +36,11 @@ if __name__ == '__main__':
         if not os.path.exists(out_dir):
             raise IOError('output directory does not exist: `%s`' % out_dir)
 
-    if args.exit_status_only:
-        # Run Profile
-        output = main(args.command, args.poll_interval, args.shell, args.exit_status_only)
+    # Run Profile
+    output = main(args.command, args.poll_interval, args.shell, args.skip_profile)
 
-        # Write output
-        output_json = json.dumps(output, indent=4)
+    # Write output
+    output_json = json.dumps(output, indent=4)
 
     if args.output_file:
         # if os.path.exists(args.output_file):
