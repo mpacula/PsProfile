@@ -16,9 +16,9 @@ if __name__ == '__main__':
     parser.add_argument('-i', '--poll_interval', type=int, default=1,
                         help='How often to poll the resource usage information in /proc, in seconds (default 1).')
     #parser.add_argument('command_script', help="path to a shell script to run")
-    parser.add_argument('-w', '--wait', help="time to wait for executable to exist", default=0)
+    parser.add_argument('-w', '--wait', type=int, help="time to wait for executable to exist", default=0)
     parser.add_argument('-s', '--shell', help="Shell to execute command with, default is /bin/bash", default='/bin/bash')
-    parser.add_argument('-s', '--skip_profile', action='store_true', help="do not profile, just get exit_status and wall time")
+    parser.add_argument('-x', '--skip_profile', action='store_true', help="do not profile, just get exit_status and wall time")
     parser.add_argument('command', nargs='+', help="The command to run.")
     args = parser.parse_args()
 
