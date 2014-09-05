@@ -38,29 +38,30 @@ def main(command, poll_interval, shell, skip_profile):
                     else:
                         output[name] = value
 
-            time.sleep(poll_interval)
+                time.sleep(poll_interval)
 
     except KeyboardInterrupt:
         print >> sys.stderr, 'Caught a SIGINT (ctrl+c), terminating'
         os.kill(proc.pid, signal.SIGINT)
+        output['exit_status'] = signal.SIGINT
 
     end_time = time.time()
 
-    if skip_profile:
-        assert output['exit_status'] == proc.poll() # can delete this if it works once
-        output['wall_time'] = int(end_time - start_time)
-    else:
+    output['wall_time'] = end_time - start_time
+    if not skip_profile:
         # Get means and maxes
         for name, values in records.items():
             output['avg_%s' % name] = mean(values)
             output['max_%s' % name] = max(values)
 
         # Calculate some extra fields
-        output['exit_status'] = proc.poll()
         output['num_polls'] = num_polls
-        output['wall_time'] = int(end_time - start_time)
+        output['exit_status'] = proc.poll()
         output['cpu_time'] = output.get('user_time', 0) + output.get('system_time', 0)
-        output['percent_cpu'] = int(round(float(output['cpu_time']) / float(output['wall_time']), 2) * 100)
+        try:
+            output['percent_cpu'] = int(round(float(output['cpu_time']) / float(output['wall_time']), 2) * 100)
+        except ZeroDivisionError:
+            output['percent_cpu'] = 0
 
 
     return output
