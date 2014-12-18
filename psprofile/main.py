@@ -28,15 +28,24 @@ def main(command, poll_interval, shell, skip_profile):
             num_polls = 0
             while proc.poll() is None:
                 num_polls += 1
+
+                # get results from all children
+                poll_result = defaultdict(list)
                 for name, value in poll_children(proc):
+                    poll_result[name].append(value)
+
+                # sum results from children and put in output/records
+                for name, values in poll_result:
                     if name in ['rss_mem_kb', 'vms_mem_kb', 'num_threads', 'num_fds']:
                         # TODO consolidate values to avoid using too much ram.  need to save max to do this
                         # if num_polls % 3600 == 0:
                         # records[name] = [_mean(records[name])]
 
-                        records[name].append(value)
+                        records[name].append(sum(values))
                     else:
-                        output[name] = value
+                        output[name] = sum(values)
+
+
 
                 time.sleep(poll_interval)
 
