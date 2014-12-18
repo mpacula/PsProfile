@@ -35,7 +35,7 @@ def main(command, poll_interval, shell, skip_profile):
                     poll_result[name].append(value)
 
                 # sum results from children and put in output/records
-                for name, values in poll_result:
+                for name, values in poll_result.items():
                     if name in ['rss_mem_kb', 'vms_mem_kb', 'num_threads', 'num_fds']:
                         # TODO consolidate values to avoid using too much ram.  need to save max to do this
                         # if num_polls % 3600 == 0:
