@@ -4,7 +4,7 @@ from setuptools import find_packages
 
 setup(
     name="psprofile",
-    version='0.1.19',
+    version='0.1.19-erisone',
     description="Collects resource usage of an executed script",
     url="http://github.com/egafni/PsProfile",
     author="Erik Gafni",
