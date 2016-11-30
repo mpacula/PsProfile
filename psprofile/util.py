@@ -46,7 +46,7 @@ def _poll(proc):
     """
 
     def _human_readable(field, value):
-        new_name = SCHEMA[field].new_name
+        new_name = SCHEMA[field].new_name if field in SCHEMA else field
         if 'kb' in new_name:
             value = int(value / 1024.)
         return new_name, value
