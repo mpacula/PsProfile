@@ -55,7 +55,7 @@ def _poll(proc):
     attrs = ['cpu_times', 'memory_info', 'io_counters', 'num_fds', 'num_ctx_switches', 'num_threads']
     for category in attrs:
         try:
-            r = getattr(proc, 'get_' + category)()
+            r = getattr(proc, category)()
         except psutil.AccessDenied:
             continue
         except psutil.NoSuchProcess:
@@ -76,7 +76,7 @@ def poll_children(p):
     """
     :yields: (attribute_name, the sum of all polled values of a process and it's children)
     """
-    polls = (_poll(child) for child in it.chain(p.get_children(recursive=True), [p]))
+    polls = (_poll(child) for child in it.chain(p.children(recursive=True), [p]))
     for tuples in it.izip(*polls):
         name = tuples[0][0]
         yield name, sum(value for _, value in tuples)
