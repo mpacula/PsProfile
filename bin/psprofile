@@ -3,6 +3,7 @@ import time
 import os
 import sys
 import json
+import traceback
 
 from psprofile.main import main
 from psprofile.util import which
@@ -19,27 +20,33 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--shell', help="Shell to execute command with, default is /bin/bash", default='/bin/bash')
     parser.add_argument('-x', '--skip_profile', action='store_true', help="do not profile, just get exit_status and wall time")
     parser.add_argument('command', nargs='+', help="The command to run.")
-    args = parser.parse_args()
 
-    # assert executable exists
-    start = time.time()
-    bin = args.command[0].split(' ')[0]
-    while not (os.path.exists(bin) or which(bin)):
-        if time.time() - start > args.wait:
-            raise IOError('`%s` does not exist!' % bin)
-        time.sleep(.5)
+    try:
+        args = parser.parse_args()
 
-    # assert output dir exists
-    if args.output_file:
-        out_dir = os.path.dirname(args.output_file)
-        if not os.path.exists(out_dir):
-            raise IOError('output directory does not exist: `%s`' % out_dir)
+        # assert executable exists
+        start = time.time()
+        bin = args.command[0].split(' ')[0]
+        while not (os.path.exists(bin) or which(bin)):
+            if time.time() - start > args.wait:
+                raise IOError('`%s` does not exist!' % bin)
+            time.sleep(.5)
 
-    # Run Profile
-    output = main(args.command, args.poll_interval, args.shell, args.skip_profile)
+        # assert output dir exists
+        if args.output_file:
+            out_dir = os.path.dirname(args.output_file)
+            if not os.path.exists(out_dir):
+                raise IOError('output directory does not exist: `%s`' % out_dir)
 
-    # Write output
-    output_json = json.dumps(output, indent=4)
+        # Run Profile
+        output = main(args.command, args.poll_interval, args.shell, args.skip_profile)
+        # Write output
+        output_json = json.dumps(output, indent=4)
+    except:
+        print >> sys.stderr, "Unexpected psprofile exit. Exception traceback below."
+        traceback.print_exc(file=sys.stderr)
+        output = {'exit_status': 1}
+        output_json = json.dumps(output, indent=4)
 
     if args.output_file:
         with open(args.output_file, 'w') as fh:
